@@ -1,0 +1,197 @@
+'use client';
+
+import { motion, AnimatePresence } from 'motion/react';
+import { X, Minus, Plus, ShoppingBag, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
+import Image from 'next/image';
+import { CartItem } from '@/types';
+
+interface CartDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  cart: CartItem[];
+  updateQuantity: (id: number, delta: number) => void;
+  onCheckout: () => void;
+  checkoutState: 'idle' | 'processing' | 'success';
+}
+
+export function CartDrawer({
+  isOpen,
+  onClose,
+  cart,
+  updateQuantity,
+  onCheckout,
+  checkoutState
+}: CartDrawerProps) {
+  const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+            aria-hidden="true"
+          />
+          <motion.div
+            id="cart-drawer"
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-white shadow-2xl"
+          >
+            <div className="p-6 border-b border-slate-100">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-bold flex items-center gap-2 text-slate-900">
+                  <ShoppingBag className="w-5 h-5" />
+                  Impulse Cart
+                </h2>
+                <button
+                  onClick={onClose}
+                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+                  aria-label="Close cart"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              <p className="text-xs text-slate-400 mt-1">Items here will never be shipped or billed.</p>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6">
+              {checkoutState === 'success' ? (
+                <div className="flex h-full flex-col items-center justify-center space-y-4 text-center">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', damping: 15 }}
+                    className="rounded-full bg-green-100 p-4 text-green-600"
+                  >
+                    <Sparkles className="h-12 w-12" />
+                  </motion.div>
+                  <h3 className="text-2xl font-bold tracking-tight text-gray-900 flex items-center justify-center gap-2">
+                    Guilt-Free Checkout <CheckCircle2 className="h-6 w-6 text-green-500"/>
+                  </h3>
+                  <p className="text-gray-500 max-w-[250px]">
+                    The dopamine has been delivered. Your wallet is safe! Zero dollars spent.
+                  </p>
+                  <button
+                    onClick={onClose}
+                    className="mt-6 rounded-full bg-gray-900 px-8 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800"
+                  >
+                    Continue Browsing
+                  </button>
+                </div>
+              ) : cart.length === 0 ? (
+                <div className="flex h-full flex-col items-center justify-center space-y-4 text-center text-gray-500">
+                  <ShoppingBag className="h-16 w-16 text-gray-200" />
+                  <p className="text-lg font-medium text-gray-900">Your cart is empty</p>
+                  <p className="max-w-[200px] text-sm">Satisfy your urge. Add some items, it&apos;s completely free.</p>
+                  <button onClick={onClose} className="mt-4 font-medium text-black underline">Start Shopping</button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {cart.map((item) => (
+                    <motion.div
+                      key={item.product.id}
+                      layout
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="flex items-center gap-3 border-b border-slate-100 pb-4 last:border-0 last:pb-0"
+                    >
+                      <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded bg-slate-100 flex items-center justify-center p-2">
+                        <Image
+                          src={item.product.image}
+                          alt={item.product.title}
+                          fill
+                          className="object-contain mix-blend-multiply"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <div className="flex flex-1 flex-col">
+                        <div className="text-xs font-bold text-slate-900 line-clamp-1">
+                          {item.product.title}
+                        </div>
+                        <div className="mt-1 flex items-center gap-3">
+                          <button
+                            onClick={() => updateQuantity(item.product.id, -1)}
+                            className="text-slate-400 hover:text-slate-600 p-1"
+                          >
+                            <Minus className="h-3 w-3" />
+                          </button>
+                          <span className="text-xs text-slate-400 font-medium">Qty: {item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.product.id, 1)}
+                            className="text-slate-400 hover:text-slate-600 p-1"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-bold text-slate-900">
+                          ${(item.product.price * item.quantity).toFixed(2)}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {cart.length > 0 && checkoutState !== 'success' && (
+              <>
+                <div className="px-6 pb-6">
+                  <div className="border-t border-slate-100 pt-4">
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-slate-500">Subtotal (Simulated)</span>
+                      <span className="text-sm font-bold text-slate-900">${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-slate-500">Actual Cost</span>
+                      <span className="text-sm font-bold text-emerald-600">$0.00</span>
+                    </div>
+                    <div className="flex justify-between py-2 border-t border-dashed border-slate-200 mt-2">
+                      <span className="text-base font-bold text-slate-900">Dopamine High</span>
+                      <span className="text-base font-bold text-indigo-600">100% Guaranteed</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 pt-0">
+                  <button
+                    id="mock-checkout-button"
+                    disabled={checkoutState === 'processing'}
+                    onClick={onCheckout}
+                    className="w-full py-4 bg-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-200 flex flex-col items-center justify-center disabled:opacity-80 transition-transform active:scale-95"
+                  >
+                    {checkoutState === 'processing' ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                        <span>Processing Payment...</span>
+                      </div>
+                    ) : (
+                      <>
+                        <span>COMPLETE VIRTUAL PURCHASE</span>
+                        <span className="text-[10px] opacity-80 uppercase tracking-widest mt-1">
+                          Satisfy the urge & save ${subtotal.toFixed(2)}
+                        </span>
+                      </>
+                    )}
+                  </button>
+                  <p className="text-[10px] text-center text-slate-400 mt-4 px-2 uppercase tracking-tight">
+                    This is a therapeutic tool. Your bank account remains untouched. Peace of mind is the true delivery.
+                  </p>
+                </div>
+              </>
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}

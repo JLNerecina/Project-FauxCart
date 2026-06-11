@@ -1,0 +1,6 @@
+{
+  "name": "FauxCart Simulation",
+  "description": "A simulated online shopping experience to satisfy buying urges without actual cost.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
