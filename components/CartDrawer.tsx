@@ -11,7 +11,6 @@ interface CartDrawerProps {
   cart: CartItem[];
   updateQuantity: (id: number, delta: number) => void;
   onCheckout: () => void;
-  checkoutState: 'idle' | 'processing' | 'success';
 }
 
 export function CartDrawer({
@@ -19,8 +18,7 @@ export function CartDrawer({
   onClose,
   cart,
   updateQuantity,
-  onCheckout,
-  checkoutState
+  onCheckout
 }: CartDrawerProps) {
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
@@ -62,30 +60,7 @@ export function CartDrawer({
             </div>
 
             <div className="flex-1 overflow-y-auto p-6">
-              {checkoutState === 'success' ? (
-                <div className="flex h-full flex-col items-center justify-center space-y-4 text-center">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', damping: 15 }}
-                    className="rounded-full bg-green-100 p-4 text-green-600"
-                  >
-                    <Sparkles className="h-12 w-12" />
-                  </motion.div>
-                  <h3 className="text-2xl font-bold tracking-tight text-gray-900 flex items-center justify-center gap-2">
-                    Guilt-Free Checkout <CheckCircle2 className="h-6 w-6 text-green-500"/>
-                  </h3>
-                  <p className="text-gray-500 max-w-[250px]">
-                    The dopamine has been delivered. Your wallet is safe! Zero dollars spent.
-                  </p>
-                  <button
-                    onClick={onClose}
-                    className="mt-6 rounded-full bg-gray-900 px-8 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800"
-                  >
-                    Continue Browsing
-                  </button>
-                </div>
-              ) : cart.length === 0 ? (
+              {cart.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center space-y-4 text-center text-gray-500">
                   <ShoppingBag className="h-16 w-16 text-gray-200" />
                   <p className="text-lg font-medium text-gray-900">Your cart is empty</p>
@@ -143,7 +118,7 @@ export function CartDrawer({
               )}
             </div>
 
-            {cart.length > 0 && checkoutState !== 'success' && (
+            {cart.length > 0 && (
               <>
                 <div className="px-6 pb-6">
                   <div className="border-t border-slate-100 pt-4">
@@ -164,24 +139,13 @@ export function CartDrawer({
 
                 <div className="p-6 pt-0">
                   <button
-                    id="mock-checkout-button"
-                    disabled={checkoutState === 'processing'}
                     onClick={onCheckout}
-                    className="w-full py-4 bg-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-200 flex flex-col items-center justify-center disabled:opacity-80 transition-transform active:scale-95"
+                    className="w-full py-4 bg-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-200 flex flex-col items-center justify-center transition-transform active:scale-95 hover:bg-emerald-700"
                   >
-                    {checkoutState === 'processing' ? (
-                      <div className="flex items-center gap-2">
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                        <span>Processing Payment...</span>
-                      </div>
-                    ) : (
-                      <>
-                        <span>COMPLETE VIRTUAL PURCHASE</span>
-                        <span className="text-[10px] opacity-80 uppercase tracking-widest mt-1">
-                          Satisfy the urge & save ${subtotal.toFixed(2)}
-                        </span>
-                      </>
-                    )}
+                    <span>COMPLETE VIRTUAL PURCHASE</span>
+                    <span className="text-[10px] opacity-80 uppercase tracking-widest mt-1">
+                      Satisfy the urge & save ${subtotal.toFixed(2)}
+                    </span>
                   </button>
                   <p className="text-[10px] text-center text-slate-400 mt-4 px-2 uppercase tracking-tight">
                     This is a therapeutic tool. Your bank account remains untouched. Peace of mind is the true delivery.

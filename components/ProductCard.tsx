@@ -1,16 +1,18 @@
 'use client';
 
 import Image from 'next/image';
-import { ShoppingBag, Star } from 'lucide-react';
+import { ShoppingBag, Star, Heart } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Product } from '@/types';
 
 interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
+  isWishlisted?: boolean;
+  onToggleWishlist?: (product: Product) => void;
 }
 
-export function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export function ProductCard({ product, onAddToCart, isWishlisted = false, onToggleWishlist }: ProductCardProps) {
   return (
     <motion.div
       id={`product-${product.id}`}
@@ -28,6 +30,18 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           referrerPolicy="no-referrer"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
+        {onToggleWishlist && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleWishlist(product);
+            }}
+            className="absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm text-slate-400 hover:text-rose-500 hover:bg-white transition-all shadow-sm z-10"
+            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Heart className={`w-5 h-5 transition-colors ${isWishlisted ? 'fill-rose-500 text-rose-500' : ''}`} />
+          </button>
+        )}
       </div>
       <div className="flex flex-col flex-1 mt-4">
         <div className="flex justify-between items-start mb-2">
