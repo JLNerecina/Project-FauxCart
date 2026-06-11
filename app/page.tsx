@@ -8,11 +8,25 @@ export default async function Home() {
   let products: Product[] = [];
 
   try {
-    const response = await fetch('https://fakestoreapi.com/products');
+    // DummyJSON provides a larger dataset, fetching up to 150 products
+    const response = await fetch('https://dummyjson.com/products?limit=150');
     if (response.ok) {
-      products = await response.json();
+      const data = await response.json();
+      products = data.products.map((p: any) => ({
+        id: p.id,
+        title: p.title,
+        price: p.price,
+        description: p.description,
+        category: p.category,
+        image: p.thumbnail,
+        rating: {
+          rate: p.rating,
+          // Fallback to stock or a random seed if review count doesn't exist
+          count: p.reviews?.length || p.stock || 120 
+        }
+      }));
     } else {
-      console.error("Failed to fetch products from FakeStore API");
+      console.error("Failed to fetch products from DummyJSON API");
     }
   } catch (error) {
     console.error("Error fetching products:", error);
