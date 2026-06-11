@@ -8,8 +8,8 @@ export default async function Home() {
   let products: Product[] = [];
 
   try {
-    // DummyJSON provides a larger dataset, fetching up to 50 products
-    const response = await fetch('https://dummyjson.com/products?limit=50');
+    // DummyJSON provides a larger dataset, fetching up to 150 products
+    const response = await fetch('https://dummyjson.com/products?limit=150');
     if (response.ok) {
       const data = await response.json();
       products = data.products.map((p: any) => ({
