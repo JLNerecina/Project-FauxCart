@@ -15,3 +15,10 @@ export interface CartItem {
   product: Product;
   quantity: number;
 }
+
+export interface PastPurchase {
+  id: string;
+  timestamp: string;
+  items: CartItem[];
+  total: number;
+}

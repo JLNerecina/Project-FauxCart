@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { ShoppingBag, Flame, Heart, Search } from 'lucide-react';
-import { Product, CartItem } from '@/types';
+import { ShoppingBag, Flame, Heart, Search, History, Trophy } from 'lucide-react';
+import { Product, CartItem, PastPurchase } from '@/types';
 import { ProductCard } from './ProductCard';
 import { CartDrawer } from './CartDrawer';
 import { WishlistDrawer } from './WishlistDrawer';
 import { CheckoutModal } from './CheckoutModal';
+import { PurchaseHistoryDrawer } from './PurchaseHistoryDrawer';
+import { MilestonesDrawer } from './MilestonesDrawer';
 import { motion } from 'motion/react';
 
 export function ShopClient({ initialProducts }: { initialProducts: Product[] }) {
@@ -16,6 +18,9 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isMilestonesOpen, setIsMilestonesOpen] = useState(false);
+  const [pastPurchases, setPastPurchases] = useState<PastPurchase[]>([]);
   const [checkoutState, setCheckoutState] = useState<'idle' | 'processing' | 'success'>('idle');
 
   const addToCart = (product: Product) => {
@@ -68,6 +73,15 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
     setCheckoutState('processing');
     // Simulate network API call
     setTimeout(() => {
+      const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+      const newPurchase: PastPurchase = {
+        id: Math.random().toString(36).substr(2, 9),
+        timestamp: new Date().toISOString(),
+        items: [...cart],
+        total: subtotal
+      };
+      
+      setPastPurchases((prev) => [newPurchase, ...prev]);
       setCheckoutState('success');
       // Clear the cart behind the scenes slightly after so the user doesn't see it abruptly empty
       setTimeout(() => {
@@ -123,6 +137,22 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
               SIMULATED SAVINGS: ${cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0).toFixed(2)}
             </div>
             
+            <button
+              onClick={() => setIsMilestonesOpen(true)}
+              className="relative flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 w-10 h-10 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
+              aria-label="Open milestones"
+            >
+              <Trophy className="h-4 w-4 text-slate-700" />
+            </button>
+
+            <button
+              onClick={() => setIsHistoryOpen(true)}
+              className="relative flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 w-10 h-10 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
+              aria-label="Open purchase history"
+            >
+              <History className="h-4 w-4 text-slate-700" />
+            </button>
+
             <button
               onClick={() => setIsWishlistOpen(true)}
               className="group relative flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 w-10 h-10 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
@@ -252,6 +282,18 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
         cart={cart}
         onConfirm={handleCheckout}
         checkoutState={checkoutState}
+      />
+
+      <PurchaseHistoryDrawer
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        purchases={pastPurchases}
+      />
+
+      <MilestonesDrawer
+        isOpen={isMilestonesOpen}
+        onClose={() => setIsMilestonesOpen(false)}
+        totalItemsPurchased={pastPurchases.reduce((sum, purchase) => sum + purchase.items.reduce((acc, item) => acc + item.quantity, 0), 0)}
       />
     </div>
   );
