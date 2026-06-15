@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ShoppingBag, Flame, Heart, Search, History, Trophy } from 'lucide-react';
 import { Product, CartItem, PastPurchase } from '@/types';
 import { ProductCard } from './ProductCard';
@@ -15,13 +15,42 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   const [products] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
+  const [pastPurchases, setPastPurchases] = useState<PastPurchase[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isMilestonesOpen, setIsMilestonesOpen] = useState(false);
-  const [pastPurchases, setPastPurchases] = useState<PastPurchase[]>([]);
   const [checkoutState, setCheckoutState] = useState<'idle' | 'processing' | 'success'>('idle');
+
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem('sim_cart');
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (savedCart) setCart(JSON.parse(savedCart));
+
+      const savedWishlist = localStorage.getItem('sim_wishlist');
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
+
+      const savedPurchases = localStorage.getItem('sim_purchases');
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (savedPurchases) setPastPurchases(JSON.parse(savedPurchases));
+    } catch (e) {
+      console.error('Failed to parse state from localStorage', e);
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('sim_cart', JSON.stringify(cart));
+      localStorage.setItem('sim_wishlist', JSON.stringify(wishlist));
+      localStorage.setItem('sim_purchases', JSON.stringify(pastPurchases));
+    }
+  }, [cart, wishlist, pastPurchases, isLoaded]);
 
   const addToCart = (product: Product) => {
     setCart((prev) => {
