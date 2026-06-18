@@ -10,9 +10,10 @@ interface ProductCardProps {
   onAddToCart: (product: Product) => void;
   isWishlisted?: boolean;
   onToggleWishlist?: (product: Product) => void;
+  onImageClick?: (product: Product) => void;
 }
 
-export function ProductCard({ product, onAddToCart, isWishlisted = false, onToggleWishlist }: ProductCardProps) {
+export function ProductCard({ product, onAddToCart, isWishlisted = false, onToggleWishlist, onImageClick }: ProductCardProps) {
   return (
     <motion.div
       id={`product-${product.id}`}
@@ -21,7 +22,10 @@ export function ProductCard({ product, onAddToCart, isWishlisted = false, onTogg
       transition={{ duration: 0.4 }}
       className="group flex flex-col justify-between bg-white p-4 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-slate-300"
     >
-      <div className="relative aspect-square overflow-hidden rounded-lg bg-slate-100 flex items-center justify-center p-6 mix-blend-multiply">
+      <div 
+        className={`relative aspect-square overflow-hidden rounded-lg bg-slate-100 flex items-center justify-center p-6 mix-blend-multiply ${onImageClick ? 'cursor-pointer' : ''}`}
+        onClick={() => onImageClick?.(product)}
+      >
         <Image
           src={product.image}
           alt={product.title}

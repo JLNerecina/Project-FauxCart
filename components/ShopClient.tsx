@@ -10,6 +10,7 @@ import { CheckoutModal } from './CheckoutModal';
 import { PurchaseHistoryDrawer } from './PurchaseHistoryDrawer';
 import { MilestonesDrawer } from './MilestonesDrawer';
 import { OrderHistorySection } from './OrderHistorySection';
+import { ProductDetailsModal } from './ProductDetailsModal';
 import { motion } from 'motion/react';
 
 export function ShopClient({ initialProducts }: { initialProducts: Product[] }) {
@@ -23,6 +24,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isMilestonesOpen, setIsMilestonesOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [checkoutState, setCheckoutState] = useState<'idle' | 'processing' | 'success'>('idle');
 
   useEffect(() => {
@@ -296,6 +298,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                 onAddToCart={addToCart}
                 isWishlisted={wishlist.some(item => item.id === product.id)}
                 onToggleWishlist={toggleWishlist}
+                onImageClick={setSelectedProduct}
               />
             ))}
           </div>
@@ -364,6 +367,15 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
         isOpen={isMilestonesOpen}
         onClose={() => setIsMilestonesOpen(false)}
         totalItemsPurchased={pastPurchases.reduce((sum, purchase) => sum + purchase.items.reduce((acc, item) => acc + item.quantity, 0), 0)}
+      />
+
+      <ProductDetailsModal
+        isOpen={selectedProduct !== null}
+        onClose={() => setSelectedProduct(null)}
+        product={selectedProduct}
+        onAddToCart={addToCart}
+        isWishlisted={selectedProduct ? wishlist.some(item => item.id === selectedProduct.id) : false}
+        onToggleWishlist={toggleWishlist}
       />
     </div>
   );
