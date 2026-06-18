@@ -127,6 +127,50 @@ export function ProductDetailsModal({
                       </div>
                     </div>
                   </div>
+
+                  {/* Simulated Customer Reviews */}
+                  <div className="py-6 border-t border-slate-100">
+                    <h3 className="text-lg font-bold text-slate-900 mb-4">Simulated Reviews</h3>
+                    <div className="space-y-4">
+                      {/* Review 1 */}
+                      <div className="bg-slate-50 p-4 rounded-xl">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="flex text-amber-500">
+                            {[...Array(Math.max(1, Math.round(product.rating.rate)))].map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                            ))}
+                            {[...Array(5 - Math.max(1, Math.round(product.rating.rate)))].map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 text-slate-300" />
+                            ))}
+                          </div>
+                          <span className="text-xs font-semibold text-slate-700">Verified Buyer</span>
+                        </div>
+                        <p className="text-sm text-slate-600">
+                          &quot;Absolutely love this! Exactly what I needed for my impulse buying simulation. Works like a charm.&quot;
+                        </p>
+                        <p className="text-xs text-slate-400 mt-2">Alex D. - 2 days ago</p>
+                      </div>
+                      
+                      {/* Review 2 */}
+                      <div className="bg-slate-50 p-4 rounded-xl">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="flex text-amber-500">
+                            {[...Array(Math.min(5, Math.max(1, Math.ceil(product.rating.rate))))].map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                            ))}
+                            {[...Array(5 - Math.min(5, Math.max(1, Math.ceil(product.rating.rate))))].map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 text-slate-300" />
+                            ))}
+                          </div>
+                          <span className="text-xs font-semibold text-slate-700">Verified Buyer</span>
+                        </div>
+                        <p className="text-sm text-slate-600">
+                          &quot;Good quality for the price. The shipping (even simulated) was incredibly fast. Highly recommended.&quot;
+                        </p>
+                        <p className="text-xs text-slate-400 mt-2">Jordan P. - 1 week ago</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-slate-100">
