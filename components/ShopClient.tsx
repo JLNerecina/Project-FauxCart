@@ -28,20 +28,16 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem('sim_cart');
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (savedCart) setCart(JSON.parse(savedCart));
 
       const savedWishlist = localStorage.getItem('sim_wishlist');
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
 
       const savedPurchases = localStorage.getItem('sim_purchases');
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (savedPurchases) setPastPurchases(JSON.parse(savedPurchases));
     } catch (e) {
       console.error('Failed to parse state from localStorage', e);
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoaded(true);
   }, []);
 
@@ -138,13 +134,21 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const [selectedPriceRange, setSelectedPriceRange] = useState('All Prices');
 
   const categories = ['All Categories', ...Array.from(new Set(products.map((p) => p.category)))];
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'All Categories' || product.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    
+    let matchesPrice = true;
+    if (selectedPriceRange === 'Under $50') matchesPrice = product.price < 50;
+    else if (selectedPriceRange === '$50 - $100') matchesPrice = product.price >= 50 && product.price <= 100;
+    else if (selectedPriceRange === '$100 - $500') matchesPrice = product.price > 100 && product.price <= 500;
+    else if (selectedPriceRange === 'Over $500') matchesPrice = product.price > 500;
+
+    return matchesSearch && matchesCategory && matchesPrice;
   });
 
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -249,6 +253,17 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                   </option>
                 ))}
               </select>
+              <select
+                value={selectedPriceRange}
+                onChange={(e) => setSelectedPriceRange(e.target.value)}
+                className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
+              >
+                <option value="All Prices">All Prices</option>
+                <option value="Under $50">Under $50</option>
+                <option value="$50 - $100">$50 - $100</option>
+                <option value="$100 - $500">$100 - $500</option>
+                <option value="Over $500">Over $500</option>
+              </select>
             </motion.div>
           </div>
 
@@ -268,11 +283,12 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
             <div className="flex flex-col items-center justify-center py-24 text-slate-500">
               <Search className="h-12 w-12 text-slate-300 mb-4" />
               <p className="text-lg font-medium text-slate-900">No items found</p>
-              <p className="text-sm mt-1">Try adapting your search or category filter.</p>
+              <p className="text-sm mt-1">Try adapting your search, or relaxing your category/price filters.</p>
               <button 
                 onClick={() => {
                   setSearchQuery('');
                   setSelectedCategory('All Categories');
+                  setSelectedPriceRange('All Prices');
                 }}
                 className="mt-4 text-sm font-medium text-indigo-600 underline"
               >
