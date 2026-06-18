@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 import { CartItem } from '@/types';
@@ -20,6 +21,18 @@ export function CheckoutModal({
   checkoutState
 }: CheckoutModalProps) {
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+  const [deliveryDates, setDeliveryDates] = useState({ start: '', end: '' });
+
+  useEffect(() => {
+    if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setDeliveryDates({
+        start: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+        end: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+      });
+    }
+  }, [isOpen]);
 
   return (
     <AnimatePresence>
@@ -94,17 +107,28 @@ export function CheckoutModal({
                     
                     <div className="border-t border-slate-100 pt-4 space-y-2">
                       <div className="flex justify-between text-sm text-slate-500">
-                        <span>Original Total</span>
-                        <span className="line-through">${subtotal.toFixed(2)}</span>
+                        <span>Subtotal</span>
+                        <span>${subtotal.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm text-slate-500">
+                        <span>Simulated Taxes (8%)</span>
+                        <span>${(subtotal * 0.08).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm text-emerald-600 font-bold">
                         <span>Simulated Discount</span>
-                        <span>-${subtotal.toFixed(2)}</span>
+                        <span>-${(subtotal * 1.08).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-lg font-bold text-slate-900 border-t border-dashed border-slate-200 pt-3 mt-2">
                         <span>Amount Due</span>
                         <span>$0.00</span>
                       </div>
+                    </div>
+                    
+                    <div className="mt-6 bg-indigo-50 rounded-lg p-4">
+                      <p className="text-sm text-indigo-800 font-medium flex items-center gap-2">
+                        <Sparkles className="w-4 h-4" />
+                        Estimated Delivery: {deliveryDates.start} - {deliveryDates.end}
+                      </p>
                     </div>
                   </div>
 
