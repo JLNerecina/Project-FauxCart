@@ -28,12 +28,15 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem('sim_cart');
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (savedCart) setCart(JSON.parse(savedCart));
 
       const savedWishlist = localStorage.getItem('sim_wishlist');
+       
       if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
 
       const savedPurchases = localStorage.getItem('sim_purchases');
+       
       if (savedPurchases) setPastPurchases(JSON.parse(savedPurchases));
     } catch (e) {
       console.error('Failed to parse state from localStorage', e);
@@ -135,6 +138,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedPriceRange, setSelectedPriceRange] = useState('All Prices');
+  const [sortBy, setSortBy] = useState('Recommended');
 
   const categories = ['All Categories', ...Array.from(new Set(products.map((p) => p.category)))];
 
@@ -149,6 +153,13 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
     else if (selectedPriceRange === 'Over $500') matchesPrice = product.price > 500;
 
     return matchesSearch && matchesCategory && matchesPrice;
+  });
+
+  const sortedFilteredProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === 'Price: Low to High') return a.price - b.price;
+    if (sortBy === 'Price: High to Low') return b.price - a.price;
+    if (sortBy === 'Rating: High to Low') return b.rating.rate - a.rating.rate;
+    return 0; // Recommended
   });
 
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -264,11 +275,21 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                 <option value="$100 - $500">$100 - $500</option>
                 <option value="Over $500">Over $500</option>
               </select>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
+              >
+                <option value="Recommended">Sort: Recommended</option>
+                <option value="Price: Low to High">Price: Low to High</option>
+                <option value="Price: High to Low">Price: High to Low</option>
+                <option value="Rating: High to Low">Rating: High to Low</option>
+              </select>
             </motion.div>
           </div>
 
           <div id="product-grid" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredProducts.map((product) => (
+            {sortedFilteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
@@ -279,7 +300,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
             ))}
           </div>
 
-          {products.length > 0 && filteredProducts.length === 0 && (
+          {products.length > 0 && sortedFilteredProducts.length === 0 && (
             <div className="flex flex-col items-center justify-center py-24 text-slate-500">
               <Search className="h-12 w-12 text-slate-300 mb-4" />
               <p className="text-lg font-medium text-slate-900">No items found</p>
@@ -289,6 +310,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                   setSearchQuery('');
                   setSelectedCategory('All Categories');
                   setSelectedPriceRange('All Prices');
+                  setSortBy('Recommended');
                 }}
                 className="mt-4 text-sm font-medium text-indigo-600 underline"
               >
