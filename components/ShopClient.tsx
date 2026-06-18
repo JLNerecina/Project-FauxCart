@@ -11,6 +11,7 @@ import { PurchaseHistoryDrawer } from './PurchaseHistoryDrawer';
 import { MilestonesDrawer } from './MilestonesDrawer';
 import { OrderHistorySection } from './OrderHistorySection';
 import { ProductDetailsModal } from './ProductDetailsModal';
+import { PromoBanner } from './PromoBanner';
 import { motion } from 'motion/react';
 
 export function ShopClient({ initialProducts }: { initialProducts: Product[] }) {
@@ -168,6 +169,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
 
   return (
     <div className="min-h-screen flex flex-col">
+      <PromoBanner />
       <header id="main-nav" className="sticky top-0 z-30 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
