@@ -9,6 +9,7 @@ import { WishlistDrawer } from './WishlistDrawer';
 import { CheckoutModal } from './CheckoutModal';
 import { PurchaseHistoryDrawer } from './PurchaseHistoryDrawer';
 import { MilestonesDrawer } from './MilestonesDrawer';
+import { OrderHistorySection } from './OrderHistorySection';
 import { motion } from 'motion/react';
 
 export function ShopClient({ initialProducts }: { initialProducts: Product[] }) {
@@ -287,6 +288,8 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
             </div>
           )}
         </div>
+
+        <OrderHistorySection purchases={pastPurchases} />
       </main>
 
       <CartDrawer

@@ -40,7 +40,7 @@ export function PurchaseHistoryDrawer({
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold flex items-center gap-2 text-slate-900">
                   <History className="w-5 h-5 text-indigo-600" />
-                  Simulated Spending History
+                  Simulated Order History
                 </h2>
                 <button
                   onClick={onClose}
