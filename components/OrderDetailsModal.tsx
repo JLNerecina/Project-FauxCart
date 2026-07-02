@@ -152,12 +152,12 @@ export function OrderDetailsModal({ isOpen, onClose, order }: OrderDetailsModalP
                   <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl divide-y divide-slate-100">
                     {order.items.map((item) => (
                       <div key={item.product.id} className="p-3 sm:p-4 flex gap-3 sm:gap-4 items-start">
-                        <div className="relative h-16 w-16 sm:h-20 sm:w-20 bg-slate-50 dark:bg-slate-950 rounded-lg p-2 shrink-0 border border-slate-100 dark:border-slate-800">
+                        <div className="relative h-16 w-16 sm:h-20 sm:w-20 bg-white rounded-lg p-2 shrink-0">
                           <Image
                             src={item.product.image}
                             alt={item.product.title}
                             fill
-                            className="object-contain mix-blend-multiply"
+                            className="object-contain mix-blend-multiply dark:mix-blend-normal"
                             referrerPolicy="no-referrer"
                           />
                         </div>

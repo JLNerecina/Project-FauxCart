@@ -121,12 +121,12 @@ export function PurchaseHistoryDrawer({
                     <div className="p-4 space-y-4">
                       {purchase.items.map((item) => (
                         <div key={item.product.id} className="flex gap-3">
-                          <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 p-1 flex items-center justify-center">
+                          <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded bg-white p-1 flex items-center justify-center">
                             <Image
                               src={item.product.image}
                               alt={item.product.title}
                               fill
-                              className="object-contain mix-blend-multiply"
+                              className="object-contain mix-blend-multiply dark:mix-blend-normal"
                               referrerPolicy="no-referrer"
                             />
                           </div>

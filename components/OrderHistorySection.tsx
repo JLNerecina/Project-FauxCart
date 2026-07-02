@@ -55,12 +55,12 @@ export function OrderHistorySection({ purchases }: { purchases: PastPurchase[] }
                 <div className="space-y-6">
                   {purchase.items.map((item) => (
                     <div key={item.product.id} className="flex gap-4 sm:gap-6">
-                      <div className="relative h-20 w-20 sm:h-24 sm:w-24 shrink-0 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-800 p-2 flex items-center justify-center">
+                      <div className="relative h-20 w-20 sm:h-24 sm:w-24 shrink-0 bg-white rounded-xl p-2 flex items-center justify-center">
                         <Image
                           src={item.product.image}
                           alt={item.product.title}
                           fill
-                          className="object-contain mix-blend-multiply"
+                          className="object-contain mix-blend-multiply dark:mix-blend-normal"
                           referrerPolicy="no-referrer"
                         />
                       </div>

@@ -231,7 +231,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
       <header id="main-nav" className="sticky top-0 z-30 w-full border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
-            <Image src="/FauxCart Logo-Photoroom.png" alt="System Logo" width={48} height={48} className="object-contain mix-blend-multiply" />
+            <Image src="/FauxCart Logo-Photoroom.png" alt="System Logo" width={48} height={48} className="object-contain mix-blend-multiply dark:invert dark:mix-blend-screen" />
             <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100 font-display">
               FAUX<span className="text-indigo-600 uppercase text-xs ml-1 font-semibold">Cart</span>
             </h1>

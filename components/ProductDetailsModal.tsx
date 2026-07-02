@@ -44,7 +44,7 @@ export function ProductDetailsModal({
               className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col md:flex-row max-h-[90vh]"
             >
               {/* Image Section */}
-              <div className="relative w-full md:w-1/2 bg-slate-100 dark:bg-slate-800 flex items-center justify-center h-48 sm:h-64 md:h-auto md:min-h-full p-6 md:p-12 mix-blend-multiply shrink-0">
+              <div className="relative w-full md:w-1/2 bg-white flex items-center justify-center h-48 sm:h-64 md:h-auto md:min-h-full p-6 md:p-12 mix-blend-multiply dark:mix-blend-normal shrink-0">
                 <button
                   onClick={onClose}
                   className="absolute top-4 left-4 md:hidden p-2 bg-white dark:bg-slate-900/80 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-slate-100 z-10"

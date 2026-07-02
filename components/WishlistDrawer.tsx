@@ -76,12 +76,12 @@ export function WishlistDrawer({
                       exit={{ opacity: 0, scale: 0.95 }}
                       className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-4 last:border-0 last:pb-0"
                     >
-                      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-2">
+                      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded bg-white flex items-center justify-center p-2">
                         <Image
                           src={product.image}
                           alt={product.title}
                           fill
-                          className="object-contain mix-blend-multiply"
+                          className="object-contain mix-blend-multiply dark:mix-blend-normal"
                           referrerPolicy="no-referrer"
                         />
                       </div>

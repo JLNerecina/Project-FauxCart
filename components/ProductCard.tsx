@@ -23,7 +23,7 @@ export function ProductCard({ product, onAddToCart, isWishlisted = false, onTogg
       className="group flex flex-col justify-between bg-white dark:bg-slate-900 p-2 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-md hover:border-slate-300"
     >
       <div 
-        className={`relative aspect-square overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-2 sm:p-6 mix-blend-multiply ${onImageClick ? 'cursor-pointer' : ''}`}
+        className={`relative aspect-square overflow-hidden rounded-lg bg-white flex items-center justify-center p-2 sm:p-6 mix-blend-multiply dark:mix-blend-normal ${onImageClick ? 'cursor-pointer' : ''}`}
         onClick={() => onImageClick?.(product)}
       >
         <Image
