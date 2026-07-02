@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ShoppingBag, Flame, Heart, Search, History, Trophy } from 'lucide-react';
+import { ShoppingBag, Flame, Heart, Search, History, Trophy, User } from 'lucide-react';
 import { Product, CartItem, PastPurchase } from '@/types';
 import { ProductCard } from './ProductCard';
 import { CartDrawer } from './CartDrawer';
@@ -12,6 +12,7 @@ import { MilestonesDrawer } from './MilestonesDrawer';
 import { OrderHistorySection } from './OrderHistorySection';
 import { ProductDetailsModal } from './ProductDetailsModal';
 import { PromoBanner } from './PromoBanner';
+import { UserProfileDrawer } from './UserProfileDrawer';
 import { motion } from 'motion/react';
 
 export function ShopClient({ initialProducts }: { initialProducts: Product[] }) {
@@ -25,6 +26,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isMilestonesOpen, setIsMilestonesOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [checkoutState, setCheckoutState] = useState<'idle' | 'processing' | 'success'>('idle');
 
@@ -203,6 +205,15 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
             </button>
 
             <button
+              onClick={() => setIsProfileOpen(true)}
+              className="relative flex items-center justify-center sm:justify-start gap-2 rounded-full border border-slate-200 bg-white p-2 w-10 h-10 sm:w-auto sm:px-4 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
+              aria-label="Open user profile"
+            >
+              <User className="h-4 w-4 text-slate-700" />
+              <span className="hidden sm:inline font-medium text-slate-900 text-sm">Me</span>
+            </button>
+
+            <button
               onClick={() => setIsWishlistOpen(true)}
               className="group relative flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 w-10 h-10 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
               aria-label="Open wishlist"
@@ -371,6 +382,12 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
         isOpen={isMilestonesOpen}
         onClose={() => setIsMilestonesOpen(false)}
         totalItemsPurchased={pastPurchases.reduce((sum, purchase) => sum + purchase.items.reduce((acc, item) => acc + item.quantity, 0), 0)}
+      />
+
+      <UserProfileDrawer
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        onOpenHistory={() => setIsHistoryOpen(true)}
       />
 
       <ProductDetailsModal
