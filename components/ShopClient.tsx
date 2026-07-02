@@ -27,6 +27,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isMilestonesOpen, setIsMilestonesOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(1250.00);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [checkoutState, setCheckoutState] = useState<'idle' | 'processing' | 'success'>('idle');
 
@@ -388,6 +389,8 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
         isOpen={isProfileOpen}
         onClose={() => setIsProfileOpen(false)}
         onOpenHistory={() => setIsHistoryOpen(true)}
+        walletBalance={walletBalance}
+        onTopUp={(amount) => setWalletBalance(prev => prev + amount)}
       />
 
       <ProductDetailsModal

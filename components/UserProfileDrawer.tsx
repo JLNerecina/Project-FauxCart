@@ -1,20 +1,32 @@
 'use client';
 
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Wallet, Package, Clock, Star, Settings, User, LogOut, ChevronRight, History } from 'lucide-react';
+import { X, Wallet, Package, Clock, Star, Settings, User, LogOut, ChevronRight, History, Plus } from 'lucide-react';
 import Image from 'next/image';
 
 interface UserProfileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   onOpenHistory: () => void;
+  walletBalance: number;
+  onTopUp: (amount: number) => void;
 }
 
 export function UserProfileDrawer({
   isOpen,
   onClose,
-  onOpenHistory
+  onOpenHistory,
+  walletBalance,
+  onTopUp
 }: UserProfileDrawerProps) {
+  const [isToppingUp, setIsToppingUp] = useState(false);
+  const topUpAmounts = [50, 100, 500, 1000];
+
+  const handleTopUp = (amount: number) => {
+    onTopUp(amount);
+    setIsToppingUp(false);
+  };
   return (
     <AnimatePresence>
       {isOpen && (
@@ -69,12 +81,40 @@ export function UserProfileDrawer({
                 <div className="bg-indigo-50 rounded-xl p-4 flex justify-between items-center">
                   <div>
                     <p className="text-xs text-indigo-600 font-medium">Available Balance</p>
-                    <p className="text-2xl font-bold text-indigo-900">$1,250.00</p>
+                    <p className="text-2xl font-bold text-indigo-900">
+                      ${walletBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </p>
                   </div>
-                  <button className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+                  <button 
+                    onClick={() => setIsToppingUp(!isToppingUp)}
+                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                  >
                     Top Up
                   </button>
                 </div>
+                
+                <AnimatePresence>
+                  {isToppingUp && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pt-4 grid grid-cols-2 gap-2">
+                        {topUpAmounts.map((amount) => (
+                          <button
+                            key={amount}
+                            onClick={() => handleTopUp(amount)}
+                            className="flex items-center justify-center gap-1 py-2 border border-indigo-200 bg-white rounded-lg text-indigo-700 font-medium hover:bg-indigo-50 transition-colors"
+                          >
+                            <Plus className="h-4 w-4" /> ${amount}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* My Purchases */}
