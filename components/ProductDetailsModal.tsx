@@ -44,7 +44,7 @@ export function ProductDetailsModal({
               className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col md:flex-row max-h-[90vh]"
             >
               {/* Image Section */}
-              <div className="relative w-full md:w-1/2 bg-slate-100 flex items-center justify-center min-h-[300px] md:min-h-full p-8 md:p-12 mix-blend-multiply">
+              <div className="relative w-full md:w-1/2 bg-slate-100 flex items-center justify-center h-48 sm:h-64 md:h-auto md:min-h-full p-6 md:p-12 mix-blend-multiply shrink-0">
                 <button
                   onClick={onClose}
                   className="absolute top-4 left-4 md:hidden p-2 bg-white/80 rounded-full text-slate-500 hover:text-slate-900 z-10"
@@ -58,7 +58,7 @@ export function ProductDetailsModal({
                   <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-rose-500 text-rose-500' : ''}`} />
                 </button>
 
-                <div className="relative w-full h-full min-h-[250px] md:min-h-[400px]">
+                <div className="relative w-full h-full min-h-[150px] md:min-h-[400px]">
                   <Image
                     src={product.image}
                     alt={product.title}

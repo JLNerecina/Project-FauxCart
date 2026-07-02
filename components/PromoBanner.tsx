@@ -23,7 +23,7 @@ export function PromoBanner() {
 
   return (
     <div className="bg-indigo-900 text-white overflow-hidden relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-10 flex items-center justify-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 min-h-[40px] py-2 flex items-center justify-center text-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -31,13 +31,13 @@ export function PromoBanner() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex items-center gap-2 text-sm font-medium"
+            className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium"
           >
             {(() => {
               const PromoIcon = PROMOS[currentIndex].icon;
-              return <PromoIcon className={`w-4 h-4 ${PROMOS[currentIndex].color}`} />;
+              return <PromoIcon className={`w-4 h-4 hidden sm:block ${PROMOS[currentIndex].color}`} />;
             })()}
-            {PROMOS[currentIndex].message}
+            <span>{PROMOS[currentIndex].message}</span>
           </motion.div>
         </AnimatePresence>
       </div>

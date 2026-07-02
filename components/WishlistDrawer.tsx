@@ -85,7 +85,7 @@ export function WishlistDrawer({
                           referrerPolicy="no-referrer"
                         />
                       </div>
-                      <div className="flex flex-1 flex-col">
+                      <div className="flex flex-1 flex-col min-w-0">
                         <div className="text-sm font-bold text-slate-900 line-clamp-2">
                           {product.title}
                         </div>

@@ -87,8 +87,8 @@ export function CartDrawer({
                           referrerPolicy="no-referrer"
                         />
                       </div>
-                      <div className="flex flex-1 flex-col">
-                        <div className="text-xs font-bold text-slate-900 line-clamp-1">
+                      <div className="flex flex-1 flex-col min-w-0">
+                        <div className="text-xs font-bold text-slate-900 truncate">
                           {item.product.title}
                         </div>
                         <div className="mt-1 flex items-center gap-3">
@@ -107,7 +107,7 @@ export function CartDrawer({
                           </button>
                         </div>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right shrink-0">
                         <div className="text-sm font-bold text-slate-900">
                           ${(item.product.price * item.quantity).toFixed(2)}
                         </div>

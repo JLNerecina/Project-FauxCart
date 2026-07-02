@@ -95,12 +95,12 @@ export function CheckoutModal({
                     </h3>
                     <div className="space-y-4 mb-6">
                       {cart.map((item) => (
-                        <div key={item.product.id} className="flex justify-between items-start text-sm">
-                          <div className="flex items-start gap-3">
-                            <span className="font-medium text-slate-500">{item.quantity}x</span>
-                            <span className="text-slate-700 font-medium line-clamp-1 flex-1 pr-4">{item.product.title}</span>
+                        <div key={item.product.id} className="flex justify-between items-start text-sm gap-2">
+                          <div className="flex items-start gap-2 flex-1 min-w-0">
+                            <span className="font-medium text-slate-500 shrink-0">{item.quantity}x</span>
+                            <span className="text-slate-700 font-medium truncate flex-1">{item.product.title}</span>
                           </div>
-                          <span className="font-bold text-slate-900">${(item.product.price * item.quantity).toFixed(2)}</span>
+                          <span className="font-bold text-slate-900 shrink-0">${(item.product.price * item.quantity).toFixed(2)}</span>
                         </div>
                       ))}
                     </div>

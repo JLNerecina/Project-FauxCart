@@ -181,8 +181,8 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
             </h1>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:block px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-bold border border-emerald-100">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <div className="hidden lg:block px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-bold border border-emerald-100">
               SIMULATED SAVINGS: ${cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0).toFixed(2)}
             </div>
             
@@ -217,11 +217,11 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
 
             <button
               onClick={() => setIsCartOpen(true)}
-              className="group relative flex items-center gap-2 rounded-full border border-slate-200 bg-white p-2 px-4 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
+              className="group relative flex items-center justify-center sm:justify-start gap-2 rounded-full border border-slate-200 bg-white p-2 w-10 h-10 sm:w-auto sm:px-4 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
               aria-label="Open cart"
             >
               <ShoppingBag className="h-4 w-4 text-slate-700" />
-              <span className="font-medium text-slate-900 text-sm">Cart</span>
+              <span className="hidden sm:inline font-medium text-slate-900 text-sm">Cart</span>
               {cartItemCount > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white shadow ring-2 ring-white transform scale-100 transition-transform">
                   {cartItemCount}
@@ -234,20 +234,20 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
 
       <main className="flex-1 pb-20 pt-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 flex items-center justify-between mt-4">
+          <div className="mb-8 flex flex-col xl:flex-row xl:items-center justify-between mt-4 gap-4">
             <motion.h2
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-2xl font-bold text-slate-800"
+              className="text-2xl font-bold text-slate-800 shrink-0"
             >
               Flash Impulse Deals
             </motion.h2>
             <motion.div
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto mt-4 sm:mt-0"
+              className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full xl:w-auto"
             >
-              <div className="relative w-full sm:w-64">
+              <div className="relative w-full sm:w-auto sm:min-w-[200px] flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <input
                   type="text"
@@ -257,38 +257,40 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                   className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all shadow-sm"
                 />
               </div>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
-              >
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={selectedPriceRange}
-                onChange={(e) => setSelectedPriceRange(e.target.value)}
-                className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
-              >
-                <option value="All Prices">All Prices</option>
-                <option value="Under $50">Under $50</option>
-                <option value="$50 - $100">$50 - $100</option>
-                <option value="$100 - $500">$100 - $500</option>
-                <option value="Over $500">Over $500</option>
-              </select>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
-              >
-                <option value="Recommended">Sort: Recommended</option>
-                <option value="Price: Low to High">Price: Low to High</option>
-                <option value="Price: High to Low">Price: High to Low</option>
-                <option value="Rating: High to Low">Rating: High to Low</option>
-              </select>
+              <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
+                >
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={selectedPriceRange}
+                  onChange={(e) => setSelectedPriceRange(e.target.value)}
+                  className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
+                >
+                  <option value="All Prices">All Prices</option>
+                  <option value="Under $50">Under $50</option>
+                  <option value="$50 - $100">$50 - $100</option>
+                  <option value="$100 - $500">$100 - $500</option>
+                  <option value="Over $500">Over $500</option>
+                </select>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
+                >
+                  <option value="Recommended">Sort: Recommended</option>
+                  <option value="Price: Low to High">Price: Low to High</option>
+                  <option value="Price: High to Low">Price: High to Low</option>
+                  <option value="Rating: High to Low">Rating: High to Low</option>
+                </select>
+              </div>
             </motion.div>
           </div>
 
