@@ -21,4 +21,6 @@ export interface PastPurchase {
   timestamp: string;
   items: CartItem[];
   total: number;
+  status?: 'to_pay' | 'to_ship' | 'to_receive' | 'to_rate' | 'completed';
+  paidAt?: string;
 }

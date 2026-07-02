@@ -5,12 +5,17 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Wallet, Package, Clock, Star, Settings, User, LogOut, ChevronRight, History, Plus } from 'lucide-react';
 import Image from 'next/image';
 
+import { PastPurchase } from '@/types';
+
 interface UserProfileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  onOpenHistory: () => void;
+  onOpenHistory: (tab?: 'all' | 'to_pay' | 'to_ship' | 'to_receive' | 'to_rate') => void;
   walletBalance: number;
   onTopUp: (amount: number) => void;
+  purchases: PastPurchase[];
+  onOpenSettings: () => void;
+  onOpenBrowsingHistory: () => void;
 }
 
 export function UserProfileDrawer({
@@ -18,7 +23,10 @@ export function UserProfileDrawer({
   onClose,
   onOpenHistory,
   walletBalance,
-  onTopUp
+  onTopUp,
+  purchases,
+  onOpenSettings,
+  onOpenBrowsingHistory
 }: UserProfileDrawerProps) {
   const [isToppingUp, setIsToppingUp] = useState(false);
   const topUpAmounts = [50, 100, 500, 1000];
@@ -27,6 +35,11 @@ export function UserProfileDrawer({
     onTopUp(amount);
     setIsToppingUp(false);
   };
+
+  const toPayCount = purchases.filter(p => p.status === 'to_pay').length;
+  const toShipCount = purchases.filter(p => p.status === 'to_ship').length;
+  const toReceiveCount = purchases.filter(p => p.status === 'to_receive').length;
+  const toRateCount = purchases.filter(p => p.status === 'to_rate').length;
   return (
     <AnimatePresence>
       {isOpen && (
@@ -132,29 +145,51 @@ export function UserProfileDrawer({
                   </button>
                 </div>
                 <div className="grid grid-cols-4 gap-2">
-                  <button className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                  <button 
+                    onClick={() => { onClose(); onOpenHistory('to_pay'); }}
+                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors"
+                  >
                     <div className="relative">
                       <Wallet className="h-6 w-6 text-slate-600" />
+                      {toPayCount > 0 && (
+                        <span className="absolute -top-1 -right-1 h-4 w-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{toPayCount}</span>
+                      )}
                     </div>
                     <span className="text-xs text-slate-600 text-center">To Pay</span>
                   </button>
-                  <button className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                  <button 
+                    onClick={() => { onClose(); onOpenHistory('to_ship'); }}
+                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors"
+                  >
                     <div className="relative">
                       <Package className="h-6 w-6 text-slate-600" />
-                      <span className="absolute -top-1 -right-1 h-4 w-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">2</span>
+                      {toShipCount > 0 && (
+                        <span className="absolute -top-1 -right-1 h-4 w-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{toShipCount}</span>
+                      )}
                     </div>
                     <span className="text-xs text-slate-600 text-center">To Ship</span>
                   </button>
-                  <button className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                  <button 
+                    onClick={() => { onClose(); onOpenHistory('to_receive'); }}
+                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors"
+                  >
                     <div className="relative">
                       <Clock className="h-6 w-6 text-slate-600" />
-                      <span className="absolute -top-1 -right-1 h-4 w-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">1</span>
+                      {toReceiveCount > 0 && (
+                        <span className="absolute -top-1 -right-1 h-4 w-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{toReceiveCount}</span>
+                      )}
                     </div>
                     <span className="text-xs text-slate-600 text-center">To Receive</span>
                   </button>
-                  <button className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                  <button 
+                    onClick={() => { onClose(); onOpenHistory('to_rate'); }}
+                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors"
+                  >
                     <div className="relative">
                       <Star className="h-6 w-6 text-slate-600" />
+                      {toRateCount > 0 && (
+                        <span className="absolute -top-1 -right-1 h-4 w-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{toRateCount}</span>
+                      )}
                     </div>
                     <span className="text-xs text-slate-600 text-center">To Rate</span>
                   </button>
@@ -166,14 +201,20 @@ export function UserProfileDrawer({
                 <div className="p-2">
                   <h4 className="font-bold text-slate-900 mb-2 px-2 text-sm">Settings</h4>
                   <div className="space-y-1">
-                    <button className="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+                    <button 
+                      onClick={() => { onClose(); onOpenSettings(); }}
+                      className="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group"
+                    >
                       <div className="flex items-center gap-3 text-slate-700 group-hover:text-indigo-600">
                         <Settings className="h-5 w-5" />
                         <span className="font-medium text-sm">Account Settings</span>
                       </div>
                       <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-indigo-600" />
                     </button>
-                    <button className="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+                    <button 
+                      onClick={() => { onClose(); onOpenBrowsingHistory(); }}
+                      className="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group"
+                    >
                       <div className="flex items-center gap-3 text-slate-700 group-hover:text-indigo-600">
                         <History className="h-5 w-5" />
                         <span className="font-medium text-sm">Browsing History</span>

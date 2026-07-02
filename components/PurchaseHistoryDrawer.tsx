@@ -9,13 +9,30 @@ interface PurchaseHistoryDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   purchases: PastPurchase[];
+  activeTab: 'all' | 'to_pay' | 'to_ship' | 'to_receive' | 'to_rate';
+  onTabChange: (tab: 'all' | 'to_pay' | 'to_ship' | 'to_receive' | 'to_rate') => void;
+  walletBalance: number;
+  onPay: (id: string, amount: number) => void;
 }
 
 export function PurchaseHistoryDrawer({
   isOpen,
   onClose,
-  purchases
+  purchases,
+  activeTab,
+  onTabChange,
+  walletBalance,
+  onPay
 }: PurchaseHistoryDrawerProps) {
+    const filteredPurchases = purchases.filter(p => activeTab === 'all' || p.status === activeTab);
+    const tabs = [
+      { id: 'all', label: 'All' },
+      { id: 'to_pay', label: 'To Pay' },
+      { id: 'to_ship', label: 'To Ship' },
+      { id: 'to_receive', label: 'To Receive' },
+      { id: 'to_rate', label: 'To Rate' }
+    ] as const;
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -36,11 +53,11 @@ export function PurchaseHistoryDrawer({
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-slate-50 shadow-2xl"
           >
-            <div className="p-6 bg-white border-b border-slate-200">
-              <div className="flex items-center justify-between">
+            <div className="bg-white border-b border-slate-200">
+              <div className="p-6 pb-4 flex items-center justify-between">
                 <h2 className="text-lg font-bold flex items-center gap-2 text-slate-900">
                   <History className="w-5 h-5 text-indigo-600" />
-                  Simulated Order History
+                  My Purchases
                 </h2>
                 <button
                   onClick={onClose}
@@ -50,19 +67,33 @@ export function PurchaseHistoryDrawer({
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <p className="text-xs text-slate-500 mt-1">Review the items you didn&apos;t buy.</p>
+              <div className="flex overflow-x-auto hide-scrollbar border-t border-slate-100">
+                {tabs.map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => onTabChange(tab.id)}
+                    className={`flex-1 min-w-[80px] py-3 text-sm font-medium text-center border-b-2 transition-colors ${
+                      activeTab === tab.id 
+                        ? 'border-indigo-600 text-indigo-600' 
+                        : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
-              {purchases.length === 0 ? (
+              {filteredPurchases.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center space-y-4 text-center text-slate-500">
                   <History className="h-16 w-16 text-slate-300" />
-                  <p className="text-lg font-medium text-slate-900">No purchase history</p>
-                  <p className="max-w-[250px] text-sm">Your simulated purchase history will appear here after you check out.</p>
+                  <p className="text-lg font-medium text-slate-900">No {activeTab !== 'all' ? tabs.find(t => t.id === activeTab)?.label : 'purchase'} history</p>
+                  <p className="max-w-[250px] text-sm">Your simulated purchase history will appear here.</p>
                   <button onClick={onClose} className="mt-4 font-medium text-indigo-600 underline hover:text-indigo-700">Start Shopping</button>
                 </div>
               ) : (
-                purchases.map((purchase) => (
+                filteredPurchases.map((purchase) => (
                   <motion.div
                     key={purchase.id}
                     initial={{ opacity: 0, y: 10 }}
@@ -106,6 +137,18 @@ export function PurchaseHistoryDrawer({
                         </div>
                       ))}
                     </div>
+                    {purchase.status === 'to_pay' && (
+                      <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                        <span className="text-xs text-slate-500">Wallet: ${walletBalance.toFixed(2)}</span>
+                        <button
+                          onClick={() => onPay(purchase.id, purchase.total)}
+                          disabled={walletBalance < purchase.total}
+                          className="px-4 py-2 bg-indigo-600 text-white text-sm font-bold rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {walletBalance < purchase.total ? 'Insufficient Balance' : 'Pay Now'}
+                        </button>
+                      </div>
+                    )}
                   </motion.div>
                 ))
               )}

@@ -13,6 +13,8 @@ import { OrderHistorySection } from './OrderHistorySection';
 import { ProductDetailsModal } from './ProductDetailsModal';
 import { PromoBanner } from './PromoBanner';
 import { UserProfileDrawer } from './UserProfileDrawer';
+import { AccountSettingsModal } from './AccountSettingsModal';
+import { BrowsingHistoryDrawer } from './BrowsingHistoryDrawer';
 import { motion } from 'motion/react';
 
 export function ShopClient({ initialProducts }: { initialProducts: Product[] }) {
@@ -20,6 +22,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
   const [pastPurchases, setPastPurchases] = useState<PastPurchase[]>([]);
+  const [browsingHistory, setBrowsingHistory] = useState<Product[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
@@ -27,6 +30,9 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isMilestonesOpen, setIsMilestonesOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isBrowsingHistoryOpen, setIsBrowsingHistoryOpen] = useState(false);
+  const [isAccountSettingsOpen, setIsAccountSettingsOpen] = useState(false);
+  const [historyTab, setHistoryTab] = useState<'all' | 'to_pay' | 'to_ship' | 'to_receive' | 'to_rate'>('all');
   const [walletBalance, setWalletBalance] = useState(1250.00);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [checkoutState, setCheckoutState] = useState<'idle' | 'processing' | 'success'>('idle');
@@ -44,6 +50,9 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
       const savedPurchases = localStorage.getItem('sim_purchases');
        
       if (savedPurchases) setPastPurchases(JSON.parse(savedPurchases));
+
+      const savedBrowsing = localStorage.getItem('sim_browsing');
+      if (savedBrowsing) setBrowsingHistory(JSON.parse(savedBrowsing));
     } catch (e) {
       console.error('Failed to parse state from localStorage', e);
     }
@@ -51,12 +60,34 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   }, []);
 
   useEffect(() => {
+    const timer = setInterval(() => {
+      setPastPurchases(prev => {
+        let changed = false;
+        const updated = prev.map(p => {
+          if (p.status === 'to_ship' && p.paidAt) {
+            const paidTime = new Date(p.paidAt).getTime();
+            if (Date.now() - paidTime > 15 * 60 * 1000) {
+              changed = true;
+              return { ...p, status: 'to_receive' as const };
+            }
+          }
+          return p;
+        });
+        return changed ? updated : prev;
+      });
+    }, 10000); // Check every 10 seconds
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
     if (isLoaded) {
       localStorage.setItem('sim_cart', JSON.stringify(cart));
       localStorage.setItem('sim_wishlist', JSON.stringify(wishlist));
       localStorage.setItem('sim_purchases', JSON.stringify(pastPurchases));
+      localStorage.setItem('sim_browsing', JSON.stringify(browsingHistory));
     }
-  }, [cart, wishlist, pastPurchases, isLoaded]);
+  }, [cart, wishlist, pastPurchases, browsingHistory, isLoaded]);
 
   const addToCart = (product: Product) => {
     setCart((prev) => {
@@ -104,6 +135,14 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
     );
   };
 
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+    setBrowsingHistory(prev => {
+      const filtered = prev.filter(p => p.id !== product.id);
+      return [product, ...filtered].slice(0, 20); // keep last 20
+    });
+  };
+
   const handleCheckout = () => {
     setCheckoutState('processing');
     // Simulate network API call
@@ -113,7 +152,8 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
         id: Math.random().toString(36).substr(2, 9),
         timestamp: new Date().toISOString(),
         items: [...cart],
-        total: subtotal
+        total: subtotal,
+        status: 'to_pay'
       };
       
       setPastPurchases((prev) => [newPurchase, ...prev]);
@@ -135,6 +175,12 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
     if (checkoutState === 'success') {
       setTimeout(() => setCheckoutState('idle'), 300);
     }
+  };
+
+  const updatePurchase = (id: string, updates: Partial<PastPurchase>) => {
+    setPastPurchases((prev) => 
+      prev.map(p => p.id === id ? { ...p, ...updates } : p)
+    );
   };
 
   const handleCloseCart = () => {
@@ -314,7 +360,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                 onAddToCart={addToCart}
                 isWishlisted={wishlist.some(item => item.id === product.id)}
                 onToggleWishlist={toggleWishlist}
-                onImageClick={setSelectedProduct}
+                onImageClick={handleProductClick}
               />
             ))}
           </div>
@@ -377,6 +423,13 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
         isOpen={isHistoryOpen}
         onClose={() => setIsHistoryOpen(false)}
         purchases={pastPurchases}
+        activeTab={historyTab}
+        onTabChange={setHistoryTab}
+        walletBalance={walletBalance}
+        onPay={(id, amount) => {
+          setWalletBalance(prev => prev - amount);
+          updatePurchase(id, { status: 'to_ship', paidAt: new Date().toISOString() });
+        }}
       />
 
       <MilestonesDrawer
@@ -388,9 +441,30 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
       <UserProfileDrawer
         isOpen={isProfileOpen}
         onClose={() => setIsProfileOpen(false)}
-        onOpenHistory={() => setIsHistoryOpen(true)}
+        onOpenHistory={(tab) => {
+          if (tab) setHistoryTab(tab);
+          setIsHistoryOpen(true);
+        }}
         walletBalance={walletBalance}
         onTopUp={(amount) => setWalletBalance(prev => prev + amount)}
+        purchases={pastPurchases}
+        onOpenSettings={() => setIsAccountSettingsOpen(true)}
+        onOpenBrowsingHistory={() => setIsBrowsingHistoryOpen(true)}
+      />
+
+      <BrowsingHistoryDrawer
+        isOpen={isBrowsingHistoryOpen}
+        onClose={() => setIsBrowsingHistoryOpen(false)}
+        history={browsingHistory}
+        onProductClick={handleProductClick}
+        onAddToCart={addToCart}
+        onToggleWishlist={toggleWishlist}
+        wishlist={wishlist}
+      />
+
+      <AccountSettingsModal
+        isOpen={isAccountSettingsOpen}
+        onClose={() => setIsAccountSettingsOpen(false)}
       />
 
       <ProductDetailsModal
