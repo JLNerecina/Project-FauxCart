@@ -13,6 +13,7 @@ interface PurchaseHistoryDrawerProps {
   onTabChange: (tab: 'all' | 'to_pay' | 'to_ship' | 'to_receive' | 'to_rate') => void;
   walletBalance: number;
   onPay: (id: string, amount: number) => void;
+  onPurchaseClick: (purchase: PastPurchase) => void;
 }
 
 export function PurchaseHistoryDrawer({
@@ -22,7 +23,8 @@ export function PurchaseHistoryDrawer({
   activeTab,
   onTabChange,
   walletBalance,
-  onPay
+  onPay,
+  onPurchaseClick
 }: PurchaseHistoryDrawerProps) {
     const filteredPurchases = purchases.filter(p => activeTab === 'all' || p.status === activeTab);
     const tabs = [
@@ -98,7 +100,8 @@ export function PurchaseHistoryDrawer({
                     key={purchase.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+                    className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
+                    onClick={() => onPurchaseClick(purchase)}
                   >
                     <div className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex items-center justify-between">
                       <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
@@ -141,7 +144,10 @@ export function PurchaseHistoryDrawer({
                       <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
                         <span className="text-xs text-slate-500">Wallet: ${walletBalance.toFixed(2)}</span>
                         <button
-                          onClick={() => onPay(purchase.id, purchase.total)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onPay(purchase.id, purchase.total);
+                          }}
                           disabled={walletBalance < purchase.total}
                           className="px-4 py-2 bg-indigo-600 text-white text-sm font-bold rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >

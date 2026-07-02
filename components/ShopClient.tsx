@@ -15,6 +15,7 @@ import { PromoBanner } from './PromoBanner';
 import { UserProfileDrawer } from './UserProfileDrawer';
 import { AccountSettingsModal } from './AccountSettingsModal';
 import { BrowsingHistoryDrawer } from './BrowsingHistoryDrawer';
+import { OrderDetailsModal } from './OrderDetailsModal';
 import { motion } from 'motion/react';
 
 export function ShopClient({ initialProducts }: { initialProducts: Product[] }) {
@@ -32,6 +33,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isBrowsingHistoryOpen, setIsBrowsingHistoryOpen] = useState(false);
   const [isAccountSettingsOpen, setIsAccountSettingsOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<PastPurchase | null>(null);
   const [historyTab, setHistoryTab] = useState<'all' | 'to_pay' | 'to_ship' | 'to_receive' | 'to_rate'>('all');
   const [walletBalance, setWalletBalance] = useState(1250.00);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -430,6 +432,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
           setWalletBalance(prev => prev - amount);
           updatePurchase(id, { status: 'to_ship', paidAt: new Date().toISOString() });
         }}
+        onPurchaseClick={setSelectedOrder}
       />
 
       <MilestonesDrawer
@@ -474,6 +477,12 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
         onAddToCart={addToCart}
         isWishlisted={selectedProduct ? wishlist.some(item => item.id === selectedProduct.id) : false}
         onToggleWishlist={toggleWishlist}
+      />
+
+      <OrderDetailsModal
+        isOpen={selectedOrder !== null}
+        onClose={() => setSelectedOrder(null)}
+        order={selectedOrder}
       />
     </div>
   );
