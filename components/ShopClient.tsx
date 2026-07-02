@@ -228,11 +228,11 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
   return (
     <div className="min-h-screen flex flex-col">
       <PromoBanner />
-      <header id="main-nav" className="sticky top-0 z-30 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
+      <header id="main-nav" className="sticky top-0 z-30 w-full border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
             <Image src="/FauxCart Logo-Photoroom.png" alt="System Logo" width={48} height={48} className="object-contain mix-blend-multiply" />
-            <h1 className="text-xl font-bold tracking-tight text-slate-900 font-display">
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100 font-display">
               FAUX<span className="text-indigo-600 uppercase text-xs ml-1 font-semibold">Cart</span>
             </h1>
           </div>
@@ -244,35 +244,35 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
             
             <button
               onClick={() => setIsMilestonesOpen(true)}
-              className="relative flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 w-10 h-10 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
+              className="relative flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 w-10 h-10 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 dark:bg-slate-950 active:scale-95"
               aria-label="Open milestones"
             >
-              <Trophy className="h-4 w-4 text-slate-700" />
+              <Trophy className="h-4 w-4 text-slate-700 dark:text-slate-300" />
             </button>
 
             <button
               onClick={() => setIsHistoryOpen(true)}
-              className="relative flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 w-10 h-10 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
+              className="relative flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 w-10 h-10 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 dark:bg-slate-950 active:scale-95"
               aria-label="Open purchase history"
             >
-              <History className="h-4 w-4 text-slate-700" />
+              <History className="h-4 w-4 text-slate-700 dark:text-slate-300" />
             </button>
 
             <button
               onClick={() => setIsProfileOpen(true)}
-              className="relative flex items-center justify-center sm:justify-start gap-2 rounded-full border border-slate-200 bg-white p-2 w-10 h-10 sm:w-auto sm:px-4 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
+              className="relative flex items-center justify-center sm:justify-start gap-2 rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 w-10 h-10 sm:w-auto sm:px-4 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 dark:bg-slate-950 active:scale-95"
               aria-label="Open user profile"
             >
-              <User className="h-4 w-4 text-slate-700" />
-              <span className="hidden sm:inline font-medium text-slate-900 text-sm">Me</span>
+              <User className="h-4 w-4 text-slate-700 dark:text-slate-300" />
+              <span className="hidden sm:inline font-medium text-slate-900 dark:text-slate-100 text-sm">Me</span>
             </button>
 
             <button
               onClick={() => setIsWishlistOpen(true)}
-              className="group relative flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 w-10 h-10 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
+              className="group relative flex items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 w-10 h-10 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 dark:bg-slate-950 active:scale-95"
               aria-label="Open wishlist"
             >
-              <Heart className={`h-4 w-4 transition-colors ${wishlist.length > 0 ? 'text-rose-500 fill-rose-500' : 'text-slate-700'}`} />
+              <Heart className={`h-4 w-4 transition-colors ${wishlist.length > 0 ? 'text-rose-500 fill-rose-500' : 'text-slate-700 dark:text-slate-300'}`} />
               {wishlist.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow ring-2 ring-white transform scale-100 transition-transform">
                   {wishlist.length}
@@ -282,11 +282,11 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
 
             <button
               onClick={() => setIsCartOpen(true)}
-              className="group relative flex items-center justify-center sm:justify-start gap-2 rounded-full border border-slate-200 bg-white p-2 w-10 h-10 sm:w-auto sm:px-4 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-95"
+              className="group relative flex items-center justify-center sm:justify-start gap-2 rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 w-10 h-10 sm:w-auto sm:px-4 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 dark:bg-slate-950 active:scale-95"
               aria-label="Open cart"
             >
-              <ShoppingBag className="h-4 w-4 text-slate-700" />
-              <span className="hidden sm:inline font-medium text-slate-900 text-sm">Cart</span>
+              <ShoppingBag className="h-4 w-4 text-slate-700 dark:text-slate-300" />
+              <span className="hidden sm:inline font-medium text-slate-900 dark:text-slate-100 text-sm">Cart</span>
               {cartItemCount > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white shadow ring-2 ring-white transform scale-100 transition-transform">
                   {cartItemCount}
@@ -303,7 +303,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
             <motion.h2
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-lg sm:text-2xl font-bold text-slate-800 shrink-0"
+              className="text-lg sm:text-2xl font-bold text-slate-800 dark:text-slate-200 shrink-0"
             >
               Flash Impulse Deals
             </motion.h2>
@@ -319,14 +319,14 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                   placeholder="Search items..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8 sm:pl-9 pr-3 sm:pr-4 py-1.5 sm:py-2 bg-white border border-slate-200 rounded-md sm:rounded-lg text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all shadow-sm"
+                  className="w-full pl-8 sm:pl-9 pr-3 sm:pr-4 py-1.5 sm:py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md sm:rounded-lg text-xs sm:text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all shadow-sm"
                 />
               </div>
               <div className="grid grid-cols-3 sm:flex sm:flex-row w-full sm:w-auto gap-2 sm:gap-3">
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full sm:w-auto py-1.5 sm:py-2 pl-2 sm:pl-3 pr-6 sm:pr-8 bg-white border border-slate-200 rounded-md sm:rounded-lg text-[10px] sm:text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm text-ellipsis"
+                  className="w-full sm:w-auto py-1.5 sm:py-2 pl-2 sm:pl-3 pr-6 sm:pr-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md sm:rounded-lg text-[10px] sm:text-sm text-slate-600 dark:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm text-ellipsis"
                 >
                   {categories.map((category) => (
                     <option key={category} value={category}>
@@ -337,7 +337,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                 <select
                   value={selectedPriceRange}
                   onChange={(e) => setSelectedPriceRange(e.target.value)}
-                  className="w-full sm:w-auto py-1.5 sm:py-2 pl-2 sm:pl-3 pr-6 sm:pr-8 bg-white border border-slate-200 rounded-md sm:rounded-lg text-[10px] sm:text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm text-ellipsis"
+                  className="w-full sm:w-auto py-1.5 sm:py-2 pl-2 sm:pl-3 pr-6 sm:pr-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md sm:rounded-lg text-[10px] sm:text-sm text-slate-600 dark:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm text-ellipsis"
                 >
                   <option value="All Prices">All Prices</option>
                   <option value="Under $50">Under $50</option>
@@ -348,7 +348,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full sm:w-auto py-1.5 sm:py-2 pl-2 sm:pl-3 pr-6 sm:pr-8 bg-white border border-slate-200 rounded-md sm:rounded-lg text-[10px] sm:text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm text-ellipsis"
+                  className="w-full sm:w-auto py-1.5 sm:py-2 pl-2 sm:pl-3 pr-6 sm:pr-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md sm:rounded-lg text-[10px] sm:text-sm text-slate-600 dark:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm text-ellipsis"
                 >
                   <option value="Recommended">Recommended</option>
                   <option value="Price: Low to High">Price: Low to High</option>
@@ -373,9 +373,9 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
           </div>
 
           {products.length > 0 && sortedFilteredProducts.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-24 text-slate-500">
+            <div className="flex flex-col items-center justify-center py-24 text-slate-500 dark:text-slate-400">
               <Search className="h-12 w-12 text-slate-300 mb-4" />
-              <p className="text-lg font-medium text-slate-900">No items found</p>
+              <p className="text-lg font-medium text-slate-900 dark:text-slate-100">No items found</p>
               <p className="text-sm mt-1">Try adapting your search, or relaxing your category/price filters.</p>
               <button 
                 onClick={() => {
@@ -392,7 +392,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
           )}
 
           {products.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-24 text-slate-500">
+            <div className="flex flex-col items-center justify-center py-24 text-slate-500 dark:text-slate-400">
               <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-300 border-t-indigo-600 mb-4"></div>
               Loading incredible fake products...
             </div>

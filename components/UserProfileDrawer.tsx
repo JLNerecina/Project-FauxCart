@@ -58,15 +58,15 @@ export function UserProfileDrawer({
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-slate-50 shadow-2xl overflow-hidden"
+            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-slate-50 dark:bg-slate-950 shadow-2xl overflow-hidden"
           >
             {/* Header / Profile Info */}
-            <div className="bg-white p-6 border-b border-slate-200">
+            <div className="bg-white dark:bg-slate-900 p-6 border-b border-slate-200 dark:border-slate-800">
               <div className="flex justify-between items-start mb-6">
-                <h2 className="text-xl font-bold text-slate-900">Me</h2>
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Me</h2>
                 <button
                   onClick={onClose}
-                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 dark:bg-slate-800 hover:text-slate-600 dark:text-slate-400 transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -76,17 +76,17 @@ export function UserProfileDrawer({
                   <User className="h-8 w-8" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-lg">Simulated User</h3>
-                  <p className="text-sm text-slate-500">simulated@example.com</p>
+                  <h3 className="font-bold text-slate-900 dark:text-slate-100 text-lg">Simulated User</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">simulated@example.com</p>
                 </div>
               </div>
             </div>
 
             <div className="flex-1 overflow-y-auto">
               {/* My Wallet */}
-              <div className="bg-white mt-2 p-4">
+              <div className="bg-white dark:bg-slate-900 mt-2 p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-bold text-slate-900 flex items-center gap-2">
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                     <Wallet className="h-4 w-4 text-indigo-600" />
                     My Wallet
                   </h4>
@@ -119,7 +119,7 @@ export function UserProfileDrawer({
                           <button
                             key={amount}
                             onClick={() => handleTopUp(amount)}
-                            className="flex items-center justify-center gap-1 py-2 border border-indigo-200 bg-white rounded-lg text-indigo-700 font-medium hover:bg-indigo-50 transition-colors"
+                            className="flex items-center justify-center gap-1 py-2 border border-indigo-200 bg-white dark:bg-slate-900 rounded-lg text-indigo-700 font-medium hover:bg-indigo-50 transition-colors"
                           >
                             <Plus className="h-4 w-4" /> ${amount}
                           </button>
@@ -131,15 +131,15 @@ export function UserProfileDrawer({
               </div>
 
               {/* My Purchases */}
-              <div className="bg-white mt-2 p-4">
+              <div className="bg-white dark:bg-slate-900 mt-2 p-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h4 className="font-bold text-slate-900">My Purchases</h4>
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100">My Purchases</h4>
                   <button 
                     onClick={() => {
                       onClose();
                       onOpenHistory();
                     }}
-                    className="text-xs text-slate-500 hover:text-indigo-600 flex items-center"
+                    className="text-xs text-slate-500 dark:text-slate-400 hover:text-indigo-600 flex items-center"
                   >
                     View History <ChevronRight className="h-3 w-3 ml-1" />
                   </button>
@@ -147,65 +147,65 @@ export function UserProfileDrawer({
                 <div className="grid grid-cols-4 gap-2">
                   <button 
                     onClick={() => { onClose(); onOpenHistory('to_pay'); }}
-                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors"
+                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 dark:bg-slate-950 rounded-lg transition-colors"
                   >
                     <div className="relative">
-                      <Wallet className="h-6 w-6 text-slate-600" />
+                      <Wallet className="h-6 w-6 text-slate-600 dark:text-slate-400" />
                       {toPayCount > 0 && (
                         <span className="absolute -top-1 -right-1 h-4 w-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{toPayCount}</span>
                       )}
                     </div>
-                    <span className="text-xs text-slate-600 text-center">To Pay</span>
+                    <span className="text-xs text-slate-600 dark:text-slate-400 text-center">To Pay</span>
                   </button>
                   <button 
                     onClick={() => { onClose(); onOpenHistory('to_ship'); }}
-                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors"
+                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 dark:bg-slate-950 rounded-lg transition-colors"
                   >
                     <div className="relative">
-                      <Package className="h-6 w-6 text-slate-600" />
+                      <Package className="h-6 w-6 text-slate-600 dark:text-slate-400" />
                       {toShipCount > 0 && (
                         <span className="absolute -top-1 -right-1 h-4 w-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{toShipCount}</span>
                       )}
                     </div>
-                    <span className="text-xs text-slate-600 text-center">To Ship</span>
+                    <span className="text-xs text-slate-600 dark:text-slate-400 text-center">To Ship</span>
                   </button>
                   <button 
                     onClick={() => { onClose(); onOpenHistory('to_receive'); }}
-                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors"
+                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 dark:bg-slate-950 rounded-lg transition-colors"
                   >
                     <div className="relative">
-                      <Clock className="h-6 w-6 text-slate-600" />
+                      <Clock className="h-6 w-6 text-slate-600 dark:text-slate-400" />
                       {toReceiveCount > 0 && (
                         <span className="absolute -top-1 -right-1 h-4 w-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{toReceiveCount}</span>
                       )}
                     </div>
-                    <span className="text-xs text-slate-600 text-center">To Receive</span>
+                    <span className="text-xs text-slate-600 dark:text-slate-400 text-center">To Receive</span>
                   </button>
                   <button 
                     onClick={() => { onClose(); onOpenHistory('to_rate'); }}
-                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 rounded-lg transition-colors"
+                    className="flex flex-col items-center gap-2 p-2 hover:bg-slate-50 dark:bg-slate-950 rounded-lg transition-colors"
                   >
                     <div className="relative">
-                      <Star className="h-6 w-6 text-slate-600" />
+                      <Star className="h-6 w-6 text-slate-600 dark:text-slate-400" />
                       {toRateCount > 0 && (
                         <span className="absolute -top-1 -right-1 h-4 w-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{toRateCount}</span>
                       )}
                     </div>
-                    <span className="text-xs text-slate-600 text-center">To Rate</span>
+                    <span className="text-xs text-slate-600 dark:text-slate-400 text-center">To Rate</span>
                   </button>
                 </div>
               </div>
 
               {/* Settings */}
-              <div className="bg-white mt-2 p-2">
+              <div className="bg-white dark:bg-slate-900 mt-2 p-2">
                 <div className="p-2">
-                  <h4 className="font-bold text-slate-900 mb-2 px-2 text-sm">Settings</h4>
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-2 px-2 text-sm">Settings</h4>
                   <div className="space-y-1">
                     <button 
                       onClick={() => { onClose(); onOpenSettings(); }}
-                      className="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group"
+                      className="w-full flex items-center justify-between p-3 hover:bg-slate-50 dark:bg-slate-950 rounded-lg transition-colors group"
                     >
-                      <div className="flex items-center gap-3 text-slate-700 group-hover:text-indigo-600">
+                      <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300 group-hover:text-indigo-600">
                         <Settings className="h-5 w-5" />
                         <span className="font-medium text-sm">Account Settings</span>
                       </div>
@@ -213,15 +213,15 @@ export function UserProfileDrawer({
                     </button>
                     <button 
                       onClick={() => { onClose(); onOpenBrowsingHistory(); }}
-                      className="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group"
+                      className="w-full flex items-center justify-between p-3 hover:bg-slate-50 dark:bg-slate-950 rounded-lg transition-colors group"
                     >
-                      <div className="flex items-center gap-3 text-slate-700 group-hover:text-indigo-600">
+                      <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300 group-hover:text-indigo-600">
                         <History className="h-5 w-5" />
                         <span className="font-medium text-sm">Browsing History</span>
                       </div>
                       <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-indigo-600" />
                     </button>
-                    <button className="w-full flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+                    <button className="w-full flex items-center justify-between p-3 hover:bg-slate-50 dark:bg-slate-950 rounded-lg transition-colors group">
                       <div className="flex items-center gap-3 text-rose-600">
                         <LogOut className="h-5 w-5" />
                         <span className="font-medium text-sm">Log Out</span>

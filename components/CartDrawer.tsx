@@ -40,17 +40,17 @@ export function CartDrawer({
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-white shadow-2xl"
+            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-white dark:bg-slate-900 shadow-2xl"
           >
-            <div className="p-6 border-b border-slate-100">
+            <div className="p-6 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold flex items-center gap-2 text-slate-900">
+                <h2 className="text-lg font-bold flex items-center gap-2 text-slate-900 dark:text-slate-100">
                   <ShoppingBag className="w-5 h-5" />
                   Impulse Cart
                 </h2>
                 <button
                   onClick={onClose}
-                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 dark:bg-slate-800 hover:text-slate-600 dark:text-slate-400 transition-colors"
                   aria-label="Close cart"
                 >
                   <X className="h-5 w-5" />
@@ -76,9 +76,9 @@ export function CartDrawer({
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      className="flex items-center gap-3 border-b border-slate-100 pb-4 last:border-0 last:pb-0"
+                      className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-4 last:border-0 last:pb-0"
                     >
-                      <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded bg-slate-100 flex items-center justify-center p-2">
+                      <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-2">
                         <Image
                           src={item.product.image}
                           alt={item.product.title}
@@ -88,27 +88,27 @@ export function CartDrawer({
                         />
                       </div>
                       <div className="flex flex-1 flex-col min-w-0">
-                        <div className="text-xs font-bold text-slate-900 truncate">
+                        <div className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
                           {item.product.title}
                         </div>
                         <div className="mt-1 flex items-center gap-3">
                           <button
                             onClick={() => updateQuantity(item.product.id, -1)}
-                            className="text-slate-400 hover:text-slate-600 p-1"
+                            className="text-slate-400 hover:text-slate-600 dark:text-slate-400 p-1"
                           >
                             <Minus className="h-3 w-3" />
                           </button>
                           <span className="text-xs text-slate-400 font-medium">Qty: {item.quantity}</span>
                           <button
                             onClick={() => updateQuantity(item.product.id, 1)}
-                            className="text-slate-400 hover:text-slate-600 p-1"
+                            className="text-slate-400 hover:text-slate-600 dark:text-slate-400 p-1"
                           >
                             <Plus className="h-3 w-3" />
                           </button>
                         </div>
                       </div>
                       <div className="text-right shrink-0">
-                        <div className="text-sm font-bold text-slate-900">
+                        <div className="text-sm font-bold text-slate-900 dark:text-slate-100">
                           ${(item.product.price * item.quantity).toFixed(2)}
                         </div>
                       </div>
@@ -121,17 +121,17 @@ export function CartDrawer({
             {cart.length > 0 && (
               <>
                 <div className="px-6 pb-6">
-                  <div className="border-t border-slate-100 pt-4">
+                  <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
                     <div className="flex justify-between mb-2">
-                      <span className="text-sm text-slate-500">Subtotal (Simulated)</span>
-                      <span className="text-sm font-bold text-slate-900">${subtotal.toFixed(2)}</span>
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Subtotal (Simulated)</span>
+                      <span className="text-sm font-bold text-slate-900 dark:text-slate-100">${subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between mb-2">
-                      <span className="text-sm text-slate-500">Actual Cost</span>
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Actual Cost</span>
                       <span className="text-sm font-bold text-emerald-600">$0.00</span>
                     </div>
-                    <div className="flex justify-between py-2 border-t border-dashed border-slate-200 mt-2">
-                      <span className="text-base font-bold text-slate-900">Dopamine High</span>
+                    <div className="flex justify-between py-2 border-t border-dashed border-slate-200 dark:border-slate-800 mt-2">
+                      <span className="text-base font-bold text-slate-900 dark:text-slate-100">Dopamine High</span>
                       <span className="text-base font-bold text-indigo-600">100% Guaranteed</span>
                     </div>
                   </div>

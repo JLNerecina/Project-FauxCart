@@ -40,28 +40,28 @@ export function MilestonesDrawer({
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-slate-50 shadow-2xl"
+            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-slate-50 dark:bg-slate-950 shadow-2xl"
           >
-            <div className="p-6 bg-white border-b border-slate-200">
+            <div className="p-6 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold flex items-center gap-2 text-slate-900">
+                <h2 className="text-lg font-bold flex items-center gap-2 text-slate-900 dark:text-slate-100">
                   <Trophy className="w-5 h-5 text-amber-500" />
                   Shopping Milestones
                 </h2>
                 <button
                   onClick={onClose}
-                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 dark:bg-slate-800 hover:text-slate-600 dark:text-slate-400 transition-colors"
                   aria-label="Close milestones"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <p className="text-xs text-slate-500 mt-1">Unlock badges based on your simulated purchases.</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Unlock badges based on your simulated purchases.</p>
             </div>
 
-            <div className="p-6 bg-slate-100/50 border-b border-slate-200 flex flex-col items-center justify-center">
-               <div className="text-4xl font-extrabold text-slate-900 mb-1">{totalItemsPurchased}</div>
-               <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Items Purchased</div>
+            <div className="p-6 bg-slate-100 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center">
+               <div className="text-4xl font-extrabold text-slate-900 dark:text-slate-100 mb-1">{totalItemsPurchased}</div>
+               <div className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Items Purchased</div>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
@@ -71,19 +71,19 @@ export function MilestonesDrawer({
                  const progress = Math.min((totalItemsPurchased / milestone.threshold) * 100, 100);
 
                  return (
-                   <div key={milestone.id} className={`p-4 rounded-xl border ${isUnlocked ? 'bg-white border-slate-200 shadow-sm' : 'bg-slate-50 opacity-70 border-slate-100'}`}>
+                   <div key={milestone.id} className={`p-4 rounded-xl border ${isUnlocked ? 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm' : 'bg-slate-50 dark:bg-slate-950 opacity-70 border-slate-100 dark:border-slate-800'}`}>
                       <div className="flex items-start gap-4">
                          <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${isUnlocked ? milestone.bg : 'bg-slate-200'}`}>
                             <Icon className={`w-6 h-6 ${isUnlocked ? milestone.color : 'text-slate-400'}`} />
                          </div>
                          <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between mb-1">
-                               <h3 className={`font-bold tracking-tight ${isUnlocked ? 'text-slate-900' : 'text-slate-500'}`}>{milestone.title}</h3>
+                               <h3 className={`font-bold tracking-tight ${isUnlocked ? 'text-slate-900 dark:text-slate-100' : 'text-slate-500 dark:text-slate-400'}`}>{milestone.title}</h3>
                                {!isUnlocked && (
                                   <span className="text-xs font-medium text-slate-400">{totalItemsPurchased} / {milestone.threshold}</span>
                                )}
                             </div>
-                            <p className="text-xs text-slate-500 leading-snug mb-3">
+                            <p className="text-xs text-slate-500 dark:text-slate-400 leading-snug mb-3">
                                {milestone.description}
                             </p>
                             {!isUnlocked && (

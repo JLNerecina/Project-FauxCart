@@ -51,7 +51,7 @@ export function CheckoutModal({
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="w-full max-w-lg bg-white rounded-2xl shadow-xl pointer-events-auto overflow-hidden flex flex-col max-h-[90vh]"
+              className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-xl pointer-events-auto overflow-hidden flex flex-col max-h-[90vh]"
             >
               {checkoutState === 'success' ? (
                 <div className="flex flex-col items-center justify-center p-12 text-center">
@@ -63,10 +63,10 @@ export function CheckoutModal({
                   >
                     <Sparkles className="h-12 w-12" />
                   </motion.div>
-                  <h3 className="text-2xl font-bold tracking-tight text-slate-900 flex items-center justify-center gap-2 mb-2">
+                  <h3 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center justify-center gap-2 mb-2">
                     Guilt-Free Checkout <CheckCircle2 className="h-6 w-6 text-emerald-500" />
                   </h3>
-                  <p className="text-slate-500 mb-8 max-w-[300px]">
+                  <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-[300px]">
                     The dopamine has been delivered. Your wallet is safe! Zero dollars spent.
                   </p>
                   <button
@@ -78,39 +78,39 @@ export function CheckoutModal({
                 </div>
               ) : (
                 <>
-                  <div className="flex items-center justify-between p-6 border-b border-slate-100">
-                    <h2 className="text-xl font-bold text-slate-900">Virtual Checkout Review</h2>
+                  <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Virtual Checkout Review</h2>
                     <button
                       onClick={onClose}
                       disabled={checkoutState === 'processing'}
-                      className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 p-2 rounded-full transition-colors disabled:opacity-50"
+                      className="text-slate-400 hover:text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:bg-slate-800 p-2 rounded-full transition-colors disabled:opacity-50"
                     >
                       <X className="w-5 h-5" />
                     </button>
                   </div>
                   
                   <div className="p-6 overflow-y-auto flex-1">
-                    <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-4">
                       Order Summary
                     </h3>
                     <div className="space-y-4 mb-6">
                       {cart.map((item) => (
                         <div key={item.product.id} className="flex justify-between items-start text-sm gap-2">
                           <div className="flex items-start gap-2 flex-1 min-w-0">
-                            <span className="font-medium text-slate-500 shrink-0">{item.quantity}x</span>
-                            <span className="text-slate-700 font-medium truncate flex-1">{item.product.title}</span>
+                            <span className="font-medium text-slate-500 dark:text-slate-400 shrink-0">{item.quantity}x</span>
+                            <span className="text-slate-700 dark:text-slate-300 font-medium truncate flex-1">{item.product.title}</span>
                           </div>
-                          <span className="font-bold text-slate-900 shrink-0">${(item.product.price * item.quantity).toFixed(2)}</span>
+                          <span className="font-bold text-slate-900 dark:text-slate-100 shrink-0">${(item.product.price * item.quantity).toFixed(2)}</span>
                         </div>
                       ))}
                     </div>
                     
-                    <div className="border-t border-slate-100 pt-4 space-y-2">
-                      <div className="flex justify-between text-sm text-slate-500">
+                    <div className="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-2">
+                      <div className="flex justify-between text-sm text-slate-500 dark:text-slate-400">
                         <span>Subtotal</span>
                         <span>${subtotal.toFixed(2)}</span>
                       </div>
-                      <div className="flex justify-between text-sm text-slate-500">
+                      <div className="flex justify-between text-sm text-slate-500 dark:text-slate-400">
                         <span>Simulated Taxes (8%)</span>
                         <span>${(subtotal * 0.08).toFixed(2)}</span>
                       </div>
@@ -118,7 +118,7 @@ export function CheckoutModal({
                         <span>Simulated Discount</span>
                         <span>-${(subtotal * 1.08).toFixed(2)}</span>
                       </div>
-                      <div className="flex justify-between text-lg font-bold text-slate-900 border-t border-dashed border-slate-200 pt-3 mt-2">
+                      <div className="flex justify-between text-lg font-bold text-slate-900 dark:text-slate-100 border-t border-dashed border-slate-200 dark:border-slate-800 pt-3 mt-2">
                         <span>Amount Due</span>
                         <span>$0.00</span>
                       </div>
@@ -132,7 +132,7 @@ export function CheckoutModal({
                     </div>
                   </div>
 
-                  <div className="p-6 bg-slate-50 border-t border-slate-100">
+                  <div className="p-6 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800">
                     <button
                       onClick={onConfirm}
                       disabled={checkoutState === 'processing' || cart.length === 0}

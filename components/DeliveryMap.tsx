@@ -44,7 +44,7 @@ export default function DeliveryMap() {
   }, []);
 
   return (
-    <div className="h-48 w-full rounded-xl overflow-hidden shadow-inner border border-slate-200">
+    <div className="h-48 w-full rounded-xl overflow-hidden shadow-inner border border-slate-200 dark:border-slate-800">
       <MapContainer 
         center={position} 
         zoom={13} 
