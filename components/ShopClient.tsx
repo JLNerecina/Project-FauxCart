@@ -234,34 +234,34 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
 
       <main className="flex-1 pb-20 pt-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 flex flex-col xl:flex-row xl:items-center justify-between mt-4 gap-4">
+          <div className="mb-6 sm:mb-8 flex flex-col xl:flex-row xl:items-center justify-between mt-2 sm:mt-4 gap-3 sm:gap-4">
             <motion.h2
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-2xl font-bold text-slate-800 shrink-0"
+              className="text-lg sm:text-2xl font-bold text-slate-800 shrink-0"
             >
               Flash Impulse Deals
             </motion.h2>
             <motion.div
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full xl:w-auto"
+              className="flex flex-col sm:flex-row flex-wrap items-center gap-2 sm:gap-3 w-full xl:w-auto"
             >
               <div className="relative w-full sm:w-auto sm:min-w-[200px] flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <Search className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-400" />
                 <input
                   type="text"
-                  placeholder="Search impulse items..."
+                  placeholder="Search items..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all shadow-sm"
+                  className="w-full pl-8 sm:pl-9 pr-3 sm:pr-4 py-1.5 sm:py-2 bg-white border border-slate-200 rounded-md sm:rounded-lg text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all shadow-sm"
                 />
               </div>
-              <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
+              <div className="grid grid-cols-3 sm:flex sm:flex-row w-full sm:w-auto gap-2 sm:gap-3">
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
+                  className="w-full sm:w-auto py-1.5 sm:py-2 pl-2 sm:pl-3 pr-6 sm:pr-8 bg-white border border-slate-200 rounded-md sm:rounded-lg text-[10px] sm:text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm text-ellipsis"
                 >
                   {categories.map((category) => (
                     <option key={category} value={category}>
@@ -272,7 +272,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                 <select
                   value={selectedPriceRange}
                   onChange={(e) => setSelectedPriceRange(e.target.value)}
-                  className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
+                  className="w-full sm:w-auto py-1.5 sm:py-2 pl-2 sm:pl-3 pr-6 sm:pr-8 bg-white border border-slate-200 rounded-md sm:rounded-lg text-[10px] sm:text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm text-ellipsis"
                 >
                   <option value="All Prices">All Prices</option>
                   <option value="Under $50">Under $50</option>
@@ -283,9 +283,9 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full sm:w-auto py-2 pl-3 pr-8 bg-white border border-slate-200 rounded-lg text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm"
+                  className="w-full sm:w-auto py-1.5 sm:py-2 pl-2 sm:pl-3 pr-6 sm:pr-8 bg-white border border-slate-200 rounded-md sm:rounded-lg text-[10px] sm:text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent cursor-pointer shadow-sm text-ellipsis"
                 >
-                  <option value="Recommended">Sort: Recommended</option>
+                  <option value="Recommended">Recommended</option>
                   <option value="Price: Low to High">Price: Low to High</option>
                   <option value="Price: High to Low">Price: High to Low</option>
                   <option value="Rating: High to Low">Rating: High to Low</option>
@@ -294,7 +294,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
             </motion.div>
           </div>
 
-          <div id="product-grid" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div id="product-grid" className="grid grid-cols-3 gap-2 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {sortedFilteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
