@@ -17,6 +17,7 @@ import { AccountSettingsModal } from './AccountSettingsModal';
 import { BrowsingHistoryDrawer } from './BrowsingHistoryDrawer';
 import { OrderDetailsModal } from './OrderDetailsModal';
 import { motion } from 'motion/react';
+import Image from 'next/image';
 
 export function ShopClient({ initialProducts }: { initialProducts: Product[] }) {
   const [products] = useState<Product[]>(initialProducts);
@@ -230,9 +231,7 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
       <header id="main-nav" className="sticky top-0 z-30 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-sm">
-              <Flame className="h-5 w-5" />
-            </div>
+            <Image src="/Logo.png" alt="System Logo" width={40} height={40} className="object-contain" />
             <h1 className="text-xl font-bold tracking-tight text-slate-900 font-display">
               FAUX<span className="text-indigo-600 uppercase text-xs ml-1 font-semibold">Cart</span>
             </h1>
