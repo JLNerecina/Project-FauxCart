@@ -70,7 +70,13 @@ export function ShopClient({ initialProducts }: { initialProducts: Product[] }) 
             const paidTime = new Date(p.paidAt).getTime();
             if (Date.now() - paidTime > 15 * 60 * 1000) {
               changed = true;
-              return { ...p, status: 'to_receive' as const };
+              return { ...p, status: 'to_receive' as const, shippedAt: new Date().toISOString() };
+            }
+          } else if (p.status === 'to_receive' && p.shippedAt) {
+            const shippedTime = new Date(p.shippedAt).getTime();
+            if (Date.now() - shippedTime > 30 * 60 * 1000) {
+              changed = true;
+              return { ...p, status: 'to_rate' as const, deliveredAt: new Date().toISOString() };
             }
           }
           return p;

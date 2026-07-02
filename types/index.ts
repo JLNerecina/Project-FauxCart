@@ -23,4 +23,6 @@ export interface PastPurchase {
   total: number;
   status?: 'to_pay' | 'to_ship' | 'to_receive' | 'to_rate' | 'completed';
   paidAt?: string;
+  shippedAt?: string;
+  deliveredAt?: string;
 }

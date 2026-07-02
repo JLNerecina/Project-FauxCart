@@ -1,9 +1,13 @@
 'use client';
 
 import { motion, AnimatePresence } from 'motion/react';
-import { X, MapPin, Truck, Package, Clock, ShieldCheck } from 'lucide-react';
+import { X, MapPin, Truck, Package, Clock, ShieldCheck, Map } from 'lucide-react';
 import Image from 'next/image';
 import { PastPurchase } from '@/types';
+import dynamic from 'next/dynamic';
+import { useState, useEffect } from 'react';
+
+const DeliveryMap = dynamic(() => import('./DeliveryMap'), { ssr: false, loading: () => <div className="h-48 w-full bg-slate-100 animate-pulse rounded-xl" /> });
 
 interface OrderDetailsModalProps {
   isOpen: boolean;
@@ -12,6 +16,15 @@ interface OrderDetailsModalProps {
 }
 
 export function OrderDetailsModal({ isOpen, onClose, order }: OrderDetailsModalProps) {
+  const [showMap, setShowMap] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setTimeout(() => setShowMap(false), 300); // wait for exit animation
+    }
+  }, [isOpen]);
+
+  // Reset map state when modal closes or order changes
   if (!order) return null;
 
   return (
@@ -81,10 +94,35 @@ export function OrderDetailsModal({ isOpen, onClose, order }: OrderDetailsModalP
 
                 {/* Delivery info */}
                 <div className="space-y-3">
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <Truck className="w-4 h-4 text-slate-400" />
-                    Delivery Information
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                      <Truck className="w-4 h-4 text-slate-400" />
+                      Delivery Information
+                    </h3>
+                    {order.status === 'to_receive' && (
+                      <button 
+                        onClick={() => setShowMap(!showMap)}
+                        className="text-xs font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md flex items-center gap-1 hover:bg-indigo-100 transition-colors"
+                      >
+                        <Map className="w-3 h-3" />
+                        {showMap ? 'Hide Map' : 'Track Order'}
+                      </button>
+                    )}
+                  </div>
+
+                  <AnimatePresence>
+                    {showMap && order.status === 'to_receive' && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <DeliveryMap />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
                   <div className="bg-slate-50 p-3 sm:p-4 rounded-xl text-sm border border-slate-100">
                     <div className="flex justify-between items-start mb-2">
                       <span className="text-slate-500">Shipping Method</span>
